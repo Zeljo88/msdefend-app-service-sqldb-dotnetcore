@@ -238,13 +238,14 @@ namespace DotNetCoreSqlDb.Controllers
         }
 
        [HttpGet]
-       public async Task<IActionResult> SimulateSQLAttack()
+        public async Task<IActionResult> SimulateSQLAttack()
         {
-            var rawQuery = "SELECT * FROM sys.tables"; // Suspicious SQL operation
-            var result = await _context.Todo.FromSqlRaw(rawQuery).ToListAsync(); 
+            var rawQuery = "SELECT * FROM Todo";  // Extracting all user data
+            var result = await _context.Todo.FromSqlRaw(rawQuery).ToListAsync();
 
-             return Ok(result); // Return query result
+            return Ok(result);
         }
+
 
      }
 }
