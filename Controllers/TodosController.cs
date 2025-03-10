@@ -236,5 +236,15 @@ namespace DotNetCoreSqlDb.Controllers
         {
             return $"{_TodoItemsCacheKey}_{id}";
         }
+
+       [HttpGet]
+       public async Task<IActionResult> SimulateSQLAttack()
+        {
+            var rawQuery = "SELECT * FROM sys.tables"; // Suspicious SQL operation
+            var result = await _context.Todo.FromSqlRaw(rawQuery).ToListAsync(); 
+
+             return Ok(result); // Return query result
+        }
+
      }
 }
