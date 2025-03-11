@@ -237,14 +237,21 @@ namespace DotNetCoreSqlDb.Controllers
             return $"{_TodoItemsCacheKey}_{id}";
         }
 
-       [HttpGet]
-        public async Task<IActionResult> SimulateSQLAttack()
-        {
-            var rawQuery = "SELECT * FROM Todo";  // Extracting all user data
-            var result = await _context.Todo.FromSqlRaw(rawQuery).ToListAsync();
+       [HttpGet("SimulateSQLAttack")]
+        public async Task<IActionResult> SimulateSQLAttack(string input)
+            {
+                if (string.IsNullOrEmpty(input))
+                {
+                    return BadRequest("Input is required.");
+                }
 
-            return Ok(result);
+                // 🚨 WARNING: This is intentionally vulnerable for testing purposes only! 🚨
+                var rawQuery = $"SELECT * FROM Todo WHERE Description LIKE '%{input}%'";
+                var result = await _context.Todo.FromSqlRaw(rawQuery).ToListAsync();
+
+                return Ok(result);
         }
+
 
 
      }
